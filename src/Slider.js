@@ -10,7 +10,8 @@ import {
   StyleSheet,
   PanResponder,
   View,
-  Easing
+  Easing,
+  Text
 } from "react-native";
 
 import PropTypes from 'prop-types';
@@ -259,6 +260,7 @@ export default class Slider extends PureComponent {
         <Animated.View
           renderToHardwareTextureAndroid={true}
           style={[mainStyles.track, trackStyle, minimumTrackStyle]} />
+
         <Animated.View
           onLayout={this._measureThumb}
           renderToHardwareTextureAndroid={true}
@@ -275,6 +277,22 @@ export default class Slider extends PureComponent {
           ]}
         >
           {this._renderThumbImage()}
+        </Animated.View>
+        <Animated.View
+          onLayout={this._measureThumb}
+          renderToHardwareTextureAndroid={true}
+          style={[
+            {backgroundColor: 'transparent', position:'absolute', top: -5},
+            {
+              transform: [
+                { translateX: thumbLeft },
+                { translateY: 0 }
+              ],
+              ...valueVisibleStyle
+            }
+          ]}
+        >
+          {this._renderValue()}
         </Animated.View>
         <View
           renderToHardwareTextureAndroid={true}
@@ -498,6 +516,12 @@ export default class Slider extends PureComponent {
       />
     );
   };
+
+  _renderValue = () => {
+    return (
+      <Text style={{fontSize: 7}}>{this._getCurrentValue()}</Text>
+    );
+  }
 
   _renderThumbImage = () => {
     var {thumbImage} = this.props;
